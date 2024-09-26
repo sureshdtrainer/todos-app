@@ -22,9 +22,9 @@ export class TodoAddEditComponent implements OnInit{
   ) {
     this.todoForm = this._fb.group({
       description: '',
-      username: '',
+      user: '',
       targetDate: '',
-      status: ''
+      done: false
     });
   }
   ngOnInit(): void {

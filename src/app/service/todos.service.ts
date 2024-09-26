@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class TodosService {
 
-  targetUrl:string='http://localhost:3000/todos';
+  targetUrl:string='http://localhost:8080/api/v1/todos';
 
   constructor(private _http:HttpClient) { }
 
@@ -20,7 +20,8 @@ export class TodosService {
   }
 
   updateTodo(id:number, data: any): Observable<any>{
-    return this._http.put(this.targetUrl+'/'+id, data);
+    let user =data['user'];
+    return this._http.put(this.targetUrl+'/user/'+user+'/'+id, data);
   }
 
   deleteTodo(id: number): Observable<any>{

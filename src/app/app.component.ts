@@ -13,7 +13,7 @@ import { CoreService } from './core/core.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent  implements OnInit{
-  displayedColumns: string[] = ['id', 'description', 'username', 'targetDate','status','actions'];
+  displayedColumns: string[] = ['id', 'description', 'user', 'targetDate','done','actions'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -41,8 +41,10 @@ export class AppComponent  implements OnInit{
   }
 
   getAllTodos(){
+    console.log('inside getAllTodos');
     this._todosService.getAllTodos().subscribe({
       next: (res) => {
+        console.log(res);
         this.dataSource = new MatTableDataSource(res);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
@@ -61,19 +63,26 @@ export class AppComponent  implements OnInit{
   }
 
   deleteTodo(id:number){
+    console.log("Inside main function of delete");
     this._todosService.deleteTodo(id).subscribe({
       next: (res) => {
+        console.log("Inside next");
+        console.log(res);
         this._coreSerivce.openSnackBar('Todos Deleted!', 'done');
         this.getAllTodos();
+        console.log("called getall todos");
       },
-      error: console.log,
-    });
+      error: (e) =>{
+        console.log('Inside error of delete');
+        console.log(e);
+    }});
   }
 
   openEditTodoForm(data: any){
     const dialogRef=this._dialog.open(TodoAddEditComponent, {
       data: data
     });
+
     dialogRef.afterClosed().subscribe({
       next: (val) =>{
         if(val){
